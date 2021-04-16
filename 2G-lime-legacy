@@ -1,0 +1,18 @@
+#!/bin/bash
+killall -9 osmo-nitb osmo-bts-trx osmo-trx-lms
+echo -e "Hello World stop w/ Ctrl-C\n"
+asterisk
+modpropbe mISDN_core
+modprobe mISDN_dsp
+modprobe snd-pcm
+exec lcr start &
+echo -e "I am going to wait for 10 seconds only ...\n"
+read -t 10
+exec /usr/bin/osmo-nitb -c /etc/osmocom/nitb/openbsc.cfg -l hlr.sqlite3 -P -m /tmp/bsc_mncc -C --debug=DRLL:DCC:DMM:DRR:DRSL:DMM --yes-i-really-want-to-run-prehistoric-software &
+echo -e "I am going to wait for 10 seconds only ...\n"
+read -t 10
+exec /usr/bin/osmo-trx-lms -C /etc/osmocom/nitb/osmo-trx.cfg &
+echo -e "I am going to wait for 10 seconds only ...\n"
+read -t 10
+exec /usr/bin/osmo-bts-trx -c /etc/osmocom/nitb/osmo-bts.cfg
+exec killall -9 osmo-nitb osmo-bts-trx osmo-trx-lms
