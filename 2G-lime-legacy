@@ -1,18 +1,33 @@
 #!/bin/bash
+#A lancer en tant que sudoer
+#on supprime les sessions précédentes sinon la lime ne se lancera pas
+#si il reste des process
 killall -9 osmo-nitb osmo-bts-trx osmo-trx-lms
+#Pour quitter le script Ctrl-C
 echo -e "Hello World stop w/ Ctrl-C\n"
+#On lance ou relance asetisk pour etre sur qu'il tourne
 asterisk
+#On charge les drivers pour lcr
 modpropbe mISDN_core
 modprobe mISDN_dsp
 modprobe snd-pcm
+#On lance un fork de lcr et on attend dix secondes
 exec lcr start &
 echo -e "I am going to wait for 10 seconds only ...\n"
 read -t 10
+#On lance un fork de Openbsc et on attends dix secondes pour qu'il
+#soit apte à accueillir osmo-trx-lms
 exec /usr/bin/osmo-nitb -c /etc/osmocom/nitb/openbsc.cfg -l hlr.sqlite3 -P -m /tmp/bsc_mncc -C --debug=DRLL:DCC:DMM:DRR:DRSL:DMM --yes-i-really-want-to-run-prehistoric-software &
 echo -e "I am going to wait for 10 seconds only ...\n"
 read -t 10
+#On lance un fork de Openbsc et on attends dix secondes pour qu'il
+#soit apte à accueillir osmo-bts-trx
 exec /usr/bin/osmo-trx-lms -C /etc/osmocom/nitb/osmo-trx.cfg &
 echo -e "I am going to wait for 10 seconds only ...\n"
 read -t 10
+#Enfin on lance un process (non forké de osmo-bts-trx) pour pouvoir killer
+#le script avec Ctrl-C
 exec /usr/bin/osmo-bts-trx -c /etc/osmocom/nitb/osmo-bts.cfg
+#On kill les process restants (la commande ne se lance que quand on a killé
+#osmo-bts-trx)
 exec killall -9 osmo-nitb osmo-bts-trx osmo-trx-lms
