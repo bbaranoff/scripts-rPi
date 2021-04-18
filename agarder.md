@@ -1,6 +1,5 @@
 ```console
-echo "test"
-```
+
 
 Script22 started on 2021-04-18 15:34:30+00:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="80" LINES="24"]
 ]0;ubuntu@ubuntu: ~[01;32mubuntu@ubuntu[00m:[01;34m~[00m$ sudo su
