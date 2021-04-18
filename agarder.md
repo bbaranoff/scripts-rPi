@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +22,7 @@ b.STR {text-decoration: line-through}
 b.UNDSTR {text-decoration: underline line-through}
 b.BLK {color: #000000}
 b.RED {color: #aa0000}
-b.GRN {color: #00aa00}
+b.GRN {color: #00aa00}sudo yum install python-ansi2html
 b.YEL {color: #aa5500}
 b.BLU {color: #0000aa}
 b.MAG {color: #aa00aa}
@@ -6098,3 +6099,5 @@ root@ubuntu:/opt/GSM/SoapyBladeRF# cd BladeRF/
 </pre>
 </body>
 </html>
+
+```
